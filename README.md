@@ -5,8 +5,8 @@
 ### `mock`
 
 This directory contains the implementation of the mocked host functions. Note
-that these functions are Extism plugin exports, which become imports the plugin
-that calls the host functions.
+that these functions are Extism plugin exports, which become imports to the
+plugin that calls the host functions.
 
 ### `plugin`
 
