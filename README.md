@@ -29,6 +29,7 @@ installed:
 - [`xtp`](https://docs.xtp.dylibso.com/docs/cli#installation) (any recent
   version)
 - [`tinygo`](https://tinygo.org/getting-started/install/) (>= 0.31.2)
+- [`zig`](https://ziglang.org/) (>= 0.13.0)
 - [`extism-js`](https://github.com/extism/js-pdk?tab=readme-ov-file#install-the-compiler)
   (>= 1.0.0-rc11)
 - [`npm`](https://nodejs.org) (>= 10.2.4)
