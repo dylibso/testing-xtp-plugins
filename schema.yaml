@@ -1,0 +1,86 @@
+version: v1-draft
+exports: 
+  handleLogEvent:
+    description: |
+      takes a LogRequest input to do some inspection and 
+      aggregate some stats to be returned
+    input: 
+      contentType: application/json
+      $ref: "#/components/schemas/LogRequest"
+    output:
+      contentType: text/plain; charset=UTF-8
+      type: string
+      description: arbitrary JSON string containing the stats the plugin aggregates
+
+imports: 
+  KvRead:
+    description: read a value from the KV based on the provided key
+    input:
+      type: string
+      contentType: text/plain; charset=utf-8
+      description: the 'key' to lookup in the KV database
+    output:
+      type: array
+      items:
+        type: string
+        format: date-time
+      contentType: application/json
+      description: the 'value' (if present) at the 'key' provided
+  KvWriteAppend:
+    description: append a value at a key to the KV database
+    input: 
+      $ref: "#/components/schemas/WriteParams"
+      contentType: application/json
+    output: 
+      $ref: "#/components/schemas/WriteReturns"
+      contentType: application/json
+
+components:
+  schemas:
+    LogRequest:
+      description: the data provided by a log event
+      properties:
+        timestamp: 
+          description: the time of the log event
+          type: string
+          format: date-time
+        payload:
+          description: arbitrary JSON object with values representing the event
+          type: object
+        source:
+          $ref: "#/components/schemas/SourceSystem"
+    LogStats:
+      description: an object indicating the log handling status
+      properties:
+        source:
+          $ref: "#/components/schemas/SourceSystem"
+        count: 
+          type: number
+          description: the aggregate count of logs written from a SourceSystem
+    SourceSystem:
+      description: the system where this log originated
+      type: string
+      enum:
+        - webapp
+        - postgres
+        - api
+        - cli
+    WriteParams:
+      description: a JSON object with a 'key' and 'value' to be inserted to the KV database
+      properties:
+        key:
+          $ref: "#/components/schemas/SourceSystem"
+        value: 
+          type: string
+          description: the value to be written at the key
+    WriteReturns:
+      description: |
+        a JSON object with a 'message' and 'code' indicating the outcome of the write.
+        Non-zero code indicates an error.
+      properties:
+        message: 
+          type: string
+          description: a message about the operation
+        code:
+          type: integer
+          description: non-zero code indicates an error

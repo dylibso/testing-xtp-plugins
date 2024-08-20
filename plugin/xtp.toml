@@ -1,0 +1,23 @@
+app_id = ""
+
+# This is where 'xtp plugin push' expects to find the wasm file after the build script has run.
+bin = "zig-out/bin/plugin.wasm"
+extension_point_id = ""
+name = "plugin"
+
+[scripts]
+
+# xtp plugin build runs this script to generate the wasm file
+build = "zig build"
+
+# xtp plugin init runs this script to format the plugin code
+format = "zig fmt ."
+
+# xtp plugin init runs this script before running the format script
+prepare = ""
+
+[[test]]
+name = "integrated host mock + plugin test"
+with = "../test/dist/plugin.wasm"
+mock_host = "../mock/host.wasm"
+mock_input = { file = "../mock-input.json" }
